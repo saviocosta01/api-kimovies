@@ -9,6 +9,6 @@ export const createUsersControllers = async(req: Request, res: Response):Promise
 
     const newUser: TUserResponse = await createUsersService(data)
 
-    return res.json(newUser)
+    return res.status(201).json(newUser)
 
 }

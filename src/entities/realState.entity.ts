@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Address } from "./addresses.entity";
 import { Category } from "./categories.entity";
 import { Schedule } from "./schedules.entity";
@@ -10,28 +10,29 @@ export class RealEstate {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({default: false})
+    @Column({type: "boolean",default: false})
     sold: boolean;
 
-    @Column({default: 0})
-    value: number;
+    @Column({type: 'decimal',precision: 12, scale: 2,  default: 0})
+    value: number | string;
 
     @Column({type: "integer"})
     size: number;
 
-    @Column()
-    createdAt: Date;
+    @CreateDateColumn({type: 'date'})
+    createdAt: string;
 
-    @Column()
-    updatedAt: Date;
+    @UpdateDateColumn({type: 'date'})
+    updatedAt: string;
 
-    @OneToOne(() => Address)
+    @OneToOne(() => Address, (address) => address.realEstate)
     @JoinColumn()
-    address: Address
+    address: Address;
 
-    @ManyToOne(() => Category)
-    category: Category
+    @ManyToOne(() => Category, (category) => category.realEstate)
+    @JoinColumn()
+    category: Category;
 
     @OneToMany(() => Schedule, (schedule) => schedule.realEstate)
-    schedule: Schedule[]
+    schedules: Schedule[]
 }

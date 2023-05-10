@@ -7,6 +7,6 @@ export const listUsersControllers = async (
   res: Response
 ): Promise<Response> => {
   const listUsers: TListUsers = await listUsersService();
-
-  return res.json(listUsers);
+ 
+  return res.status(200).json(listUsers);
 };

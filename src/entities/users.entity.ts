@@ -2,6 +2,7 @@ import { type } from "os";
 import { AfterInsert, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { date } from "zod";
 import { Schedule } from "./schedules.entity";
+import { getRounds, hashSync } from "bcryptjs";
 
 @Entity('users')
 
@@ -27,10 +28,23 @@ export class User {
     @UpdateDateColumn({type: 'date'})
     updatedAt: string ;
 
-    @DeleteDateColumn({type: 'date'})
+    @DeleteDateColumn({type: 'date', nullable: true})
     deletedAt: string;
 
     @OneToMany(() => Schedule, (schedule) => schedule.user)
-    schedule: Schedule[]
+    schedules: Schedule[]
+
+    @BeforeInsert() 
+    @BeforeUpdate()
+    hashPassword() { // Função simples
+
+   // getRounds validando se a senha já não foi criptografada antes devido ao update
+   const isEncrypted: number = getRounds(this.password); 
+
+   if (!isEncrypted) {
+      // Adicionando ao objeto que irá para o banco a senha criptografada
+      this.password = hashSync(this.password, 10);
+   }
+}
 
 }

@@ -16,3 +16,11 @@ export const userSchemaRequest  = userSchema.omit({id: true, createdAt: true, up
 export const userSchemaResponse = userSchema.omit({password: true})
 
 export const listUserSchema = z.array(userSchemaResponse)
+
+export const updateUserSchema = userSchema.partial().omit({ admin: true, id: true });
+
+export const loginUserSchema = z.object({
+    email: z.string().email(),
+    password: z.string().max(120),
+})
+
