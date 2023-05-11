@@ -1,33 +1,31 @@
-import { Repository } from "typeorm"
-import { RealEstate, Schedule } from "../../entities"
-import { AppDataSource } from "../../data-source"
-import { TListSchedulesByRealEstate } from "../../interfaces/schedules.interfaces"
+import { Repository } from "typeorm";
+import { RealEstate, Schedule } from "../../entities";
+import { AppDataSource } from "../../data-source";
+import { TListSchedulesByRealEstate } from "../../interfaces/schedules.interfaces";
 
+export const listScheduleByRealEstateService = async (
+  id: number
+): Promise<TListSchedulesByRealEstate> => {
+  const schedulesRepository: Repository<Schedule> =
+    AppDataSource.getRepository(Schedule);
+  const realEstateRepository: Repository<RealEstate> =
+    AppDataSource.getRepository(RealEstate);
 
-
-export const listScheduleByRealEstateService = async(id: number): Promise<TListSchedulesByRealEstate> => {
-    const schedulesRepository: Repository<Schedule> = AppDataSource.getRepository(Schedule)
-    const realEstateRepository: Repository<RealEstate> = AppDataSource.getRepository(RealEstate)
-
-    const findRealEstate: RealEstate | null | any = await realEstateRepository.find({
-        where: {
-            id: id
+  const findRealEstate: RealEstate | null | any =
+    await realEstateRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        schedules: {
+          user: true,
         },
-        relations:{
-            address: true,
-            category: true
-        }
-    })
+        address: true,
+        category: true,
+      },
+    });
 
-    const schedule: Schedule | null | any = await schedulesRepository.find({
-        where: {
-            realEstate: findRealEstate
-        },
-        relations: {
-            user: true
-        }
-    })
-    await schedulesRepository.save(schedule)
+  await realEstateRepository.save(findRealEstate);
 
-    return schedule
-}
+  return findRealEstate;
+};
