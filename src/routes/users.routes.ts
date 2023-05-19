@@ -22,4 +22,3 @@ userRoutes.patch("/:id",tokenValidated, validateBodyMiddleware(updateUserSchema)
 userRoutes.delete("/:id",tokenValidated,ensureUserExistsMiddleware, validatedAdminMiddleware, deleteUsersControllers)
 
 
-// updateUserSchema
