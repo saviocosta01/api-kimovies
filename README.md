@@ -7,7 +7,6 @@ Através da aplicação é possível realizar o cadastro de imóveis e de usuár
 -   Foi feita a **serialização** dos dados utilizando a biblioteca **zod**;
 -   Foi utilizado um banco de dados **postgres** para a elaboração da API;
 -   Foi utilizado **TypeORM**;
--   
 
 As tabelas estão seguindo essas nomenclaturas para banco e entidade:**
 
@@ -44,7 +43,6 @@ As tabelas estão seguindo essas nomenclaturas para banco e entidade:**
     -   **createdAt**;
     -   **updatedAt**;
     -   **deletedAt**.
-    -   
 -   A rota **não precisa de autenticação** para ser acessada.
 -   
 ### GET - /users
